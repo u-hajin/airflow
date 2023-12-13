@@ -5,7 +5,7 @@ from airflow import DAG
 from airflow.operators.empty import EmptyOperator # 아무것도 하지 않는 operator
 
 with DAG(
-    dag_id="dags_bash_operator",
+    dag_id="dags_conn_test",
     schedule=None,
     start_date=pendulum.datetime(2023, 3, 1, tz="Asia/Seoul"),
     catchup=False,
