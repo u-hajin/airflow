@@ -13,7 +13,7 @@ with DAG(
   
     t1_orange = BashOperator(
         task_id="t1_orange",
-        bash_command="/opt/airflow/plugins/shell/select_fruit.sh ORAGNE", # worker 컨테이너가 sh 위치를 알 수 있도록, yaml 파일에서 /opt/airflow/plugins까지 인식되도록 설정했음, 그 이하 파일 인식 가능
+        bash_command="/opt/airflow/plugins/shell/select_fruit.sh ORANGE", # worker 컨테이너가 sh 위치를 알 수 있도록, yaml 파일에서 /opt/airflow/plugins까지 인식되도록 설정했음, 그 이하 파일 인식 가능
     )
 
     t2_avocado = BashOperator(
