@@ -22,10 +22,15 @@ with DAG(
         trigger_run_id=None,
         execution_date='{{ data_interval_start }}',
         reset_dag_run=True,
-        wait_for_completion=False, # trigger된 dag 완료될 때까지 기다리지 않음
+        wait_for_completion=True,
         poke_interval=60,
         allowed_states=['success'],
-        failed_states=None
+        failed_states=['fail']
     )
     
-    start_task >> trigger_dag_task
+    end_task = BashOperator(
+        task_id='end_task',
+        bash_command='echo "end!"',
+    )
+    
+    start_task >> trigger_dag_task >> end_task
