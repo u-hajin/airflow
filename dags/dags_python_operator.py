@@ -13,22 +13,22 @@ with DAG(
     start_date=pendulum.datetime(2023, 12, 1, tz="Asia/Seoul"),
     catchup=False,
 ) as dag:
-    # def select_fruits():
-    #     fruit = ["APPLE", "BANANA", "ORANGE", "AVOCADO"]
-    #     rand_int = random.randint(0, 3)
-    #     print(fruit[rand_int])
-
-    # py_t1 = PythonOperator(
-    #     task_id="py_t1",
-    #     python_callable=select_fruits # 어떤 함수를 실행시키는지
-    # )
-    
-    @task(task_id='py_t1')
     def select_fruits():
         fruit = ["APPLE", "BANANA", "ORANGE", "AVOCADO"]
         rand_int = random.randint(0, 3)
         print(fruit[rand_int])
-        raise AirflowException('exception 발생')
+
+    py_t1 = PythonOperator(
+        task_id="py_t1",
+        python_callable=select_fruits # 어떤 함수를 실행시키는지
+    )
+    
+    # @task(task_id='py_t1')
+    # def select_fruits():
+    #     fruit = ["APPLE", "BANANA", "ORANGE", "AVOCADO"]
+    #     rand_int = random.randint(0, 3)
+    #     print(fruit[rand_int])
+    #     raise AirflowException('exception 발생')
         
 
-    select_fruits()
+    py_t1
