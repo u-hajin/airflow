@@ -25,7 +25,7 @@ with DAG(
         wait_for_completion=True,
         poke_interval=60,
         allowed_states=['success'],
-        failed_states=['fail']
+        failed_states=['failed']
     )
     
     end_task = BashOperator(
