@@ -10,7 +10,8 @@ with DAG(
     schedule=None,
     catchup=False
 ) as dag:
-    
+
+
     '''서울시 공공자전거 대여소 정보'''
     tb_cycle_station_info = SimpleHttpOperator(
         task_id='tb_cycle_station_info',
@@ -19,19 +20,18 @@ with DAG(
         method='GET',
         headers={'Content-Type': 'application/json',
                         'charset': 'utf-8',
-                        'Accept': '*/*' 
+                        'Accept': '*/*'
                         }
     )
-    
+
     @task(task_id='python_2')
     def python_2(**kwargs):
         ti = kwargs['ti']
-        result = ti.xcom_pull(task_ids='tb_cycle_station_info') # SimpleHttpOperator의 return 값
-        
+        result = ti.xcom_pull(task_ids='tb_cycle_station_info')
         import json
         from pprint import pprint
-        
+
         pprint(json.loads(result))
-        
-    
+
+
     tb_cycle_station_info >> python_2()
