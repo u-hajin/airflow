@@ -8,7 +8,7 @@ with DAG(
     dag_id='dags_python_sensor',
     start_date=pendulum.datetime(2023, 12, 1, tz='Asia/Seoul'),
     schedule='10 1 * * *',
-    catchup=False
+    catchup=True
 ) as dag:
     def check_api_update(http_conn_id, endpoint, base_dt_col, **kwargs):
         import requests
@@ -22,9 +22,9 @@ with DAG(
         key_nm = list(contents.keys())[0]
         row_data = contents.get(key_nm).get('row')
         last_dt = row_data[0].get(base_dt_col)
-        # last_date = last_dt[:10]
+        last_date = last_dt[:10]
         # last_date = last_date.replace('.', '-').replace('/', '-')
-        last_date = last_dt[:4] + '-' + last_dt[4:6] + '-' + last_dt[6:]
+        # last_date = last_dt[:4] + '-' + last_dt[4:6] + '-' + last_dt[6:]
         
         try:
             pendulum.from_format(last_date, 'YYYY-MM-DD')
@@ -45,8 +45,8 @@ with DAG(
         task_id='sensor_task',
         python_callable=check_api_update,
         op_kwargs={'http_conn_id':'openapi.seoul.go.kr',
-                   'endpoint':'{{ var.value.apikey_openapi_seoul_go_kr }}/json/CardSubwayStatsNew',
-                   'base_dt_col':'WORK_DT'},
+                   'endpoint':'{{ var.value.apikey_openapi_seoul_go_kr }}/json/IotVdata020',
+                   'base_dt_col':'REGIST_DT'},
         poke_interval=600, # 10분
         mode='reschedule'
     )
