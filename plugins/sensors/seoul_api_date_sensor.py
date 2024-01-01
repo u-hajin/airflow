@@ -35,7 +35,7 @@ class SeoulApiDateSensor(BaseSensorOperator):
         response = requests.get(url)
 
         contents = json.loads(response.text)
-        key_name = list(contents.key())[0]
+        key_name = list(contents.keys())[0]
         row_data = contents.get(key_name).get('row')
         last_dt = row_data[0].get(self.base_date_col)
         last_date = last_dt[:10]
