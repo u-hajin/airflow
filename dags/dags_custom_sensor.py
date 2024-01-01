@@ -13,7 +13,7 @@ with DAG(
         task_id='iot_vdate_sensor',
         dataset_name='IotVdata020',
         base_date_col='REGIST_DT',
-        day_off=0,
+        day_off=-10,
         poke_interval=600,
         mode='reschedule'
     )
@@ -22,7 +22,7 @@ with DAG(
         task_id='tv_corona19_vaccine_stat_new_sensor',
         dataset_name='tvCorona19VaccinestatNew',
         base_date_col='S_VC_DT',
-        day_off=-365,
+        day_off=-200,
         poke_interval=600,
         mode='reschedule'
     )
