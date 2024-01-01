@@ -24,33 +24,33 @@ class SeoulApiDateSensor(BaseSensorOperator):
         self.day_off = day_off
         
 
-def poke(self, context):
-    import requests
-    import json
-    from dateutil.relativedelta import relativedelta
-    
-    connection = BaseHook.get_connection(self.http_conn_id)
-    url = f'http://{connection.host}:{connection.port}/{self.endpoint}'
-    self.log.info(f'request url: {url}')
-    response = requests.get(url)
-    
-    contents = json.loads(response.text)
-    key_name = list(contents.key())[0]
-    row_data = contents.get(key_name).get('row')
-    last_dt = row_data[0].get(self.base_date_col)
-    last_date = last_dt[:10]
-    last_date = last_date.replace('.', '-').replace('/', '-')
-    search_ymd = (context.get('data_interval_end').in_timezone('Asia/Seoul') + relativedelta(days=self.day_off)).strftime('%Y-%m-%d')
-    try:
-        import pendulum
-        pendulum.from_format(last_date, 'YYYY-MM-DD')
-    except:
-        from airflow.exceptions import AirflowException
-        AirflowException(f'{self.base_date_col} 컬럼은 YYYY.MM.DD 또는 YYYY/MM/DD 형태가 아닙니다.')
+    def poke(self, context):
+        import requests
+        import json
+        from dateutil.relativedelta import relativedelta
 
-    if last_date >= search_ymd:
-        self.log.info(f'생성 확인 (기준 날짜: {search_ymd} / API Last 날짜: {last_date})')
-        return True
-    else:
-        self.log.info(f'Update 미완료 (기준 날짜: {search_ymd} / API Last 날짜: {last_date})')
-        return False
+        connection = BaseHook.get_connection(self.http_conn_id)
+        url = f'http://{connection.host}:{connection.port}/{self.endpoint}'
+        self.log.info(f'request url: {url}')
+        response = requests.get(url)
+
+        contents = json.loads(response.text)
+        key_name = list(contents.key())[0]
+        row_data = contents.get(key_name).get('row')
+        last_dt = row_data[0].get(self.base_date_col)
+        last_date = last_dt[:10]
+        last_date = last_date.replace('.', '-').replace('/', '-')
+        search_ymd = (context.get('data_interval_end').in_timezone('Asia/Seoul') + relativedelta(days=self.day_off)).strftime('%Y-%m-%d')
+        try:
+            import pendulum
+            pendulum.from_format(last_date, 'YYYY-MM-DD')
+        except:
+            from airflow.exceptions import AirflowException
+            AirflowException(f'{self.base_date_col} 컬럼은 YYYY.MM.DD 또는 YYYY/MM/DD 형태가 아닙니다.')
+
+        if last_date >= search_ymd:
+            self.log.info(f'생성 확인 (기준 날짜: {search_ymd} / API Last 날짜: {last_date})')
+            return True
+        else:
+            self.log.info(f'Update 미완료 (기준 날짜: {search_ymd} / API Last 날짜: {last_date})')
+            return False
