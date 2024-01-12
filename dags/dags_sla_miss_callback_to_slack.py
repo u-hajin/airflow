@@ -26,7 +26,7 @@ with DAG(
     )
     
     task_sleep60_sla245 = BashOperator(
-        task_id='task_sleep60_sla245',
+        task_id='task_sleep60_sla230',
         bash_command='sleep 60',
         sla=timedelta(seconds=245)
     )
