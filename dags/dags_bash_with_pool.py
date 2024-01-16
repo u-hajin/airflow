@@ -35,12 +35,6 @@ with DAG(
         bash_command='sleep 30',
     )
     
-    bash_task_1 = BashOperator(
-        task_id='bash_task_1',
-        bash_command='sleep 30',
-        priority_weight=6,
-    )
-    
     bash_task_5 = BashOperator(
         task_id='bash_task_5',
         bash_command='sleep 30',
@@ -69,4 +63,3 @@ with DAG(
         bash_command='sleep 30',
         priority_weight=9,
     )
-    
