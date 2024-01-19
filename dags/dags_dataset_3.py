@@ -15,6 +15,5 @@ with DAG(
 ) as dag:
     bash_task = BashOperator(
         task_id='bash_task',
-        outlets=[dataset_producer_2],
         bash_command='echo {{ ti.run_id }} && echo "2번이 완료되면 수행" && echo "3번 수행 완료"'
     )
