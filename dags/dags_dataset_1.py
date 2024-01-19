@@ -7,7 +7,7 @@ from airflow.operators.bash import BashOperator
 dataset_producer_1 = Dataset("dataset_producer_1")
 
 with DAG(
-    dag_id='dags_dataset_3',
+    dag_id='dags_dataset_1',
     schedule='0 7 * * *',
     start_date=pendulum.datetime(2024, 1, 1, tz='Asia/Seoul'),
     catchup=False
