@@ -61,7 +61,7 @@ with DAG(
                     # 모니터링 수행 dag
                     current_dag = context['task'].dag_id
                     
-                    if running_df.shape[0] == 1:
+                    if running_df.shape[0] == 1:    # 모니터링 수행 dag만 존재하는 경우
                         return_blocks.append(sb.section_text("없음"))
                     elif not running_df.empty:
                         for idx, row in running_df.iterrows():
