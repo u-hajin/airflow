@@ -44,7 +44,7 @@ with DAG(
                     
                     # 2) 미수행 대상
                     skipped_df = result.query("(run_count == 0)")
-                    return_blocks.append(sb.section_text("*3. 미수행 대상"))
+                    return_blocks.append(sb.section_text("*3. 미수행 대상*"))
                     
                     if not skipped_df.empty:
                         for idx, row in skipped_df.iterrows():
