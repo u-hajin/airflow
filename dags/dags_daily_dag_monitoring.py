@@ -68,7 +68,7 @@ with DAG(
                     
                     # 4) 성공 대상
                     done_success_count = result.query("(failed_count == 0) and (run_count > 0) and (running_count == 0)").shape[0]  # 어제, 오늘 한번도 fail하지 않고, 한번 이상 돌았으며 현재 돌고 있지 않은 dag
-                    yesterday = pendulum.now('Asia/Seoul').strftime('%Y-%m-%d')
+                    yesterday = pendulum.yesterday('Asia/Seoul').strftime('%Y-%m-%d')
                     now = pendulum.now('Asia/Seoul').strftime('%Y-%m-%d %H:%M:%S')
                     
                     return_blocks = [ sb.section_text(f"DAG 수행 현황 알림({yesterday} ~ {now})"),
