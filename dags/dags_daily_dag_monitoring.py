@@ -83,7 +83,7 @@ with DAG(
     send_to_slack = SlackWebhookOperator(
         task_id='send_to_slack',
         slack_webhook_conn_id='conn_slack_airflow_bot',
-        blocks='{{ ti.xcom_pull(task_id="get_daily_monitoring_result_task") }}'
+        blocks='{{ ti.xcom_pull(task_ids="get_daily_monitoring_result_task") }}'
     )
     
     get_daily_monitoring_result_task() >> send_to_slack
