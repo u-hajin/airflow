@@ -4,8 +4,8 @@ WITH today_dag AS(	-- VIEW 생성
 	WHERE is_paused = FALSE
 	AND is_active = TRUE
 	AND schedule_interval NOT IN('null', '"Dataset"')
-	AND (date(next_dagrun_data_interval_start) BETWEEN current_date -1 AND current_date
-	OR date(next_dagrun_data_interval_end) BETWEEN current_date -1 AND current_date)	--어제 수행되었거나 오늘 예정인 대상
+	AND (date(next_dagrun_data_interval_start) BETWEEN current_date -1 AND current_date -- 어제나 오늘 수행된 대상
+	OR date(next_dagrun_data_interval_end) BETWEEN current_date -1 AND current_date)	-- 어제나 오늘이 배치일인 대상
 )
 , today_dagrun AS (
 	SELECT
@@ -22,9 +22,10 @@ WITH today_dag AS(	-- VIEW 생성
 )
 SELECT
 	d.dag_id,
-	r.run_count,
-	r.success_count,
-	r.running_count,
+	coalesce(r.run_count, 0),
+	coalesce(r.success_count, 0),
+    coalesce(r.failed_count, 0),
+	coalesce(r.running_count, 0),
 	r.last_failed_date,
 	r.last_success_date,
 	next_dagrun_data_interval_start,
