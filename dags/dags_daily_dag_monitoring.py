@@ -21,7 +21,7 @@ with DAG(
         
         with closing(postgres_hook.get_conn()) as conn:
             with closing(conn.cursor()) as cursor:
-                with open('/opt/aiflow/files/sqls/daily_dag_monitoring.sql', 'r') as sql_files:
+                with open('/opt/airflow/files/sqls/daily_dag_monitoring.sql', 'r') as sql_files:
                     cursor.execute("SET TIME ZONE 'Asia/Seoul';")
                     sql = '\n'.join(sql_files.readlines())  # ist로 가져오고(read_lines) 요소 사이에 \n 끼우고 다시 text 변환(join)
                     cursor.execute(sql)
