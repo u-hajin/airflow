@@ -61,13 +61,13 @@ with DAG(
                     # 모니터링 수행 dag
                     current_dag = context['task'].dag_id
                     
-                    if not running_df.empty:
+                    if running_df.shape[0] == 1:
+                        return_blocks.append(sb.section_text("없음"))
+                    elif not running_df.empty:
                         for idx, row in running_df.iterrows():
                             if row['dag_id'] == current_dag:    # 모니터링 수행 dag은 항상 수행 중 대상에 포함되므로 제외
                                 continue
                             return_blocks.append(sb.section_text(f"*DAG:* {row['dag_id']}\n*배치 일자:* {row['next_dagrun_data_interval_start']}"))
-                    elif running_df.shape[0] == 1:
-                        return_blocks.append(sb.section_text("없음"))
                         
                     return_blocks.append(sb.divider())
                     
