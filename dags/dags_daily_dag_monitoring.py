@@ -16,7 +16,7 @@ with DAG(
 ) as dag:
     
     @task(task_id='get_daily_monitoring_result_task')
-    def get_daily_monitoring_result_task():
+    def get_daily_monitoring_result_task(**context):
         postgres_hook = PostgresHook(postgres_conn_id='conn-db-postgres-airflow')
         
         with closing(postgres_hook.get_conn()) as conn:
@@ -58,8 +58,13 @@ with DAG(
                     running_df = result.query("(running_count > 0)")
                     return_blocks.append(sb.section_text("*4. 수행 중*"))
                     
+                    # 모니터링 수행 dag
+                    current_dag = context['task'].dag_id
+                    
                     if not running_df.empty:
                         for idx, row in running_df.iterrows():
+                            if row['dag_id'] == current_dag:
+                                continue
                             return_blocks.append(sb.section_text(f"*DAG:* {row['dag_id']}\n*배치 일자:* {row['next_dagrun_data_interval_start']}"))
                     else:
                         return_blocks.append(sb.section_text("없음"))
