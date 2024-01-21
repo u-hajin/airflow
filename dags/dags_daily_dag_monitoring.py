@@ -63,11 +63,10 @@ with DAG(
                     
                     if not running_df.empty:
                         for idx, row in running_df.iterrows():
-                            if row['dag_id'] == current_dag and running_df.shape[0] == 1:    # 모니터링 수행 dag은 항상 수행 중 대상에 포함되므로 제외
-                                return_blocks.append(sb.section_text("없음"))
-                                break
+                            if row['dag_id'] == current_dag:    # 모니터링 수행 dag은 항상 수행 중 대상에 포함되므로 제외
+                                continue
                             return_blocks.append(sb.section_text(f"*DAG:* {row['dag_id']}\n*배치 일자:* {row['next_dagrun_data_interval_start']}"))
-                    else:
+                    elif running_df.shape[0] == 1:
                         return_blocks.append(sb.section_text("없음"))
                         
                     return_blocks.append(sb.divider())
@@ -79,7 +78,7 @@ with DAG(
                     
                     return_blocks = [ sb.section_text(f"DAG 수행 현황 알림({yesterday} ~ {now})"),
                                       sb.divider(),
-                                      sb.section_text(f"*1. 수행 대상 DAG 개수*: {result.shape[0]}\n    (1) 성공 DAG 개수: {done_success_count}\n    (2) 실패: {failed_df.shape[0]}\n    (3) 미수행: {skipped_df.shape[0]}\n    (4) 수행 중: {0 if running_df.shape[0] == 1 else running_df.shape[0]}"),
+                                      sb.section_text(f"*1. 수행 대상 DAG 개수*: {result.shape[0]}\n    (1) 성공 DAG 개수: {done_success_count}\n    (2) 실패: {failed_df.shape[0]}\n    (3) 미수행: {skipped_df.shape[0]}\n    (4) 수행 중: {running_df.shape[0] - 1}"),
                                       sb.divider()
                                     ] + return_blocks
                     
