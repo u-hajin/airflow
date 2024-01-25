@@ -58,11 +58,15 @@ with DAG(
                     running_df = result.query("(running_count > 0)")
                     html_content += "<h2>4. 수행 중</h2><br/>"
                     
-                    if not running_df.empty:
-                        for idx, row in running_df.iterrows():
-                            html_content += f"DAG: {row['dag_id']}<br/>배치 일자: {row['next_dagrun_data_interval_start']}<br/><br/>"
-                    else:
+                    current_dag = kwargs['dag'].dag_id
+                    
+                    if running_df.shape[0] == 1:
                         html_content += "없음<br/><br/>"
+                    elif not running_df.empty:
+                        for idx, row in running_df.iterrows():
+                            if row['dag_id'] == current_dag:
+                                continue
+                            html_content += f"DAG: {row['dag_id']}<br/>배치 일자: {row['next_dagrun_data_interval_start']}<br/><br/>"
 
                     # 4) 성공 대상
                     done_success_count = result.query("(failed_count == 0) and (run_count > 0) and (running_count == 0)").shape[0]
@@ -76,7 +80,7 @@ with DAG(
 &nbsp;&nbsp;&nbsp;&nbsp;(1) 성공 DAG 개수: {done_success_count}<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(2) 실패: {failed_df.shape[0]}<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(3) 미수행: {skipped_df.shape[0]}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(4) 수행 중: {running_df.shape[0]}<br/><br/>''' + html_content
+&nbsp;&nbsp;&nbsp;&nbsp;(4) 수행 중: {running_df.shape[0] - 1}<br/><br/>''' + html_content
                     
                     print(html_content)
                     return html_content
