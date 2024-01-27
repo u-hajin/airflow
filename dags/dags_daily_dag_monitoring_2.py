@@ -8,7 +8,6 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
 from contextlib import closing
 
 @dag(
-    dag_id='dags_daily_dag_monitoring_2',
     start_date=pendulum.datetime(2024, 1, 1, tz='Asia/Seoul'),
     schedule='0 8 * * *',
     catchup=False
@@ -93,4 +92,4 @@ def dags_daily_dag_monitoring_2():
     
     get_daily_monitoring_result_task() >> send_to_slack
 
-dags_daily_dag_monitoring_2()
+# dags_daily_dag_monitoring_2()
