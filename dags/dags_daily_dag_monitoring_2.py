@@ -92,4 +92,4 @@ def dags_daily_dag_monitoring_2():
     
     get_daily_monitoring_result_task() >> send_to_slack
 
-# dags_daily_dag_monitoring_2()
+dags_daily_dag_monitoring_2()
