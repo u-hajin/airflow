@@ -8,13 +8,13 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
 from contextlib import closing
 
 @dag(
-    dag_id='dags_daily_dag_monitoring',
+    dag_id='dags_daily_dag_monitoring_2',
     start_date=pendulum.datetime(2024, 1, 1, tz='Asia/Seoul'),
     schedule='0 8 * * *',
     catchup=False
 )
 
-def dags_daily_dag_monitoring():    
+def dags_daily_dag_monitoring_2():    
     @task(task_id='get_daily_monitoring_result_task')
     def get_daily_monitoring_result_task(**context):
         postgres_hook = PostgresHook(postgres_conn_id='conn-db-postgres-airflow')
@@ -93,4 +93,4 @@ def dags_daily_dag_monitoring():
     
     get_daily_monitoring_result_task() >> send_to_slack
 
-dags_daily_dag_monitoring()
+dags_daily_dag_monitoring_2()
