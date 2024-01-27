@@ -7,7 +7,6 @@ from airflow.operators.bash import BashOperator
 dataset_producer_1 = Dataset("dataset_producer_1")
 dataset_producer_2 = Dataset("dataset_producer_2")
 
-
 with DAG(
     dag_id='dags_dataset_2',
     schedule=[dataset_producer_1],
