@@ -20,5 +20,6 @@ with DAG(
     
     bash_sleep_task = BashOperator(
         task_id='bash_sleep_task',
-        bash_command='sleep 45 && echo "1번 sleep task 수행 완료"'
+        outlets=[dataset_producer_1],
+        bash_command='sleep 30 && echo "1번 sleep task 수행 완료"'
     )
